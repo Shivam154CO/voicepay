@@ -1,4 +1,4 @@
-@import "https://cdn.tailwindcss.com";
+@import "tailwindcss";
 
 @layer base {
   html {

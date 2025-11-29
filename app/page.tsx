@@ -41,7 +41,26 @@ const voiceData = {
   accuracyRate: [92.5, 94.2, 95.8, 96.3, 97.1, 97.8, 98.2, 98.7, 99.1, 99.4, 99.6, 99.8]
 };
 
-const AnimatedBarChart = ({ data, color, height = 200 }) => {
+// Add TypeScript interfaces
+interface AnimatedBarChartProps {
+  data: number[];
+  color: string;
+  height?: number;
+}
+
+interface AnimatedLineChartProps {
+  data: number[];
+  color: string;
+  height?: number;
+}
+
+interface RadialProgressProps {
+  value: number;
+  color: string;
+  size?: number;
+}
+
+const AnimatedBarChart = ({ data, color, height = 200 }: AnimatedBarChartProps) => {
   const maxValue = Math.max(...data);
   
   return (
@@ -63,7 +82,7 @@ const AnimatedBarChart = ({ data, color, height = 200 }) => {
   );
 };
 
-const AnimatedLineChart = ({ data, color, height = 200 }) => {
+const AnimatedLineChart = ({ data, color, height = 200 }: AnimatedLineChartProps) => {
   const maxValue = Math.max(...data);
   const points = data.map((value, index) => ({
     x: (index / (data.length - 1)) * 100,
@@ -103,7 +122,7 @@ const AnimatedLineChart = ({ data, color, height = 200 }) => {
   );
 };
 
-const RadialProgress = ({ value, color, size = 120 }) => {
+const RadialProgress = ({ value, color, size = 120 }: RadialProgressProps) => {
   const circumference = 2 * Math.PI * 45;
   const strokeDashoffset = circumference - (value / 100) * circumference;
 
@@ -294,48 +313,6 @@ export default function VoicePayEnterprise() {
     "Pay credit card bill"
   ];
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!isMounted) return;
-      setIsScrolled(window.scrollY > 100);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isMounted]);
-
-  useEffect(() => {
-    if (!isMounted) return;
-    const interval = setInterval(() => {
-      setActiveFeature((prev) => (prev + 1) % features.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [isMounted]);
-
-  useEffect(() => {
-    if (!isMounted) return;
-    const interval = setInterval(() => {
-      setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [isMounted]);
-
-  const handleVoiceCommand = () => {
-    setIsListening(true);
-    const randomCommand = voiceCommands[Math.floor(Math.random() * voiceCommands.length)];
-    setVoiceCommand(randomCommand);
-    
-    setTimeout(() => {
-      setIsListening(false);
-      setShowVoiceResponse(true);
-      setTimeout(() => setShowVoiceResponse(false), 3000);
-    }, 3000);
-  };
-
   const stats = [
     { 
       icon: <Users className="w-6 h-6" />, 
@@ -490,6 +467,48 @@ export default function VoicePayEnterprise() {
     { name: "RBI Empaneled", icon: "🏦", level: "Approved" },
     { name: "FIDO2 Certified", icon: "🔑", level: "Enterprise" }
   ];
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!isMounted) return;
+      setIsScrolled(window.scrollY > 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isMounted]);
+
+  useEffect(() => {
+    if (!isMounted) return;
+    const interval = setInterval(() => {
+      setActiveFeature((prev) => (prev + 1) % features.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [isMounted]);
+
+  useEffect(() => {
+    if (!isMounted) return;
+    const interval = setInterval(() => {
+      setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [isMounted]);
+
+  const handleVoiceCommand = () => {
+    setIsListening(true);
+    const randomCommand = voiceCommands[Math.floor(Math.random() * voiceCommands.length)];
+    setVoiceCommand(randomCommand);
+    
+    setTimeout(() => {
+      setIsListening(false);
+      setShowVoiceResponse(true);
+      setTimeout(() => setShowVoiceResponse(false), 3000);
+    }, 3000);
+  };
 
   if (!isMounted) {
     return (

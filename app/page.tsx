@@ -41,7 +41,6 @@ const voiceData = {
   accuracyRate: [92.5, 94.2, 95.8, 96.3, 97.1, 97.8, 98.2, 98.7, 99.1, 99.4, 99.6, 99.8]
 };
 
-// Add TypeScript interfaces
 interface AnimatedBarChartProps {
   data: number[];
   color: string;
